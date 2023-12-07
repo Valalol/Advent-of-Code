@@ -1,6 +1,6 @@
 
 
-def remap(map, range):
+def remap(input_map, input_range):
     # let a b be a range of seeds
     # let f(x) be the function applied to the range
     # let r_a, r_b be the range where f(x) is applied Ex [5, 25]
@@ -26,17 +26,59 @@ def remap(map, range):
     #     [[a, r_a-1], [f(r_a), f(r_b)], [r_b+1, b]]
     #     [0, 30] -> [[0, 4], [f(5), f(25)], [26, 30]]
     
-    # 5 : r_b < a <= b
+    # 5 : r_b < a
     #     [[a, b]]
     #     [40, 50] -> [[40, 50]]
     
-    # 6 : a < b < r_a
+    # 6 : b < r_a
     #    [[a, b]]
     #    [0, 4] -> [[0, 4]]
     
-    return
-
-
+    def f(x, offset):
+        return x + offset
+    
+    
+    processed_ranges = []
+    unprocessed_ranges = [input_range]
+    for selected_range in input_map:
+        r_a, r_b = selected_range[0]
+        offset = selected_range[1]
+        
+        for _ in range(len(unprocessed_ranges)):
+            a, b = unprocessed_ranges.pop(0)
+            
+            if r_a <= a and b <= r_b:
+                print("case 1")
+                processed_ranges.append([a + offset, b + offset])
+            
+            elif a < r_a and r_a <= b and b <= r_b:
+                print("case 2")
+                unprocessed_ranges.append([a, r_a-1])
+                processed_ranges.append([f(r_a, offset), f(b, offset)])
+            
+            elif r_a <= a and a <= r_b and r_b < b:
+                print("case 3")
+                unprocessed_ranges.append([r_b+1, b])
+                processed_ranges.append([f(a, offset), f(r_b, offset)])
+            
+            elif a < r_a and r_a <= r_b and r_b < b:
+                print("case 4")
+                unprocessed_ranges.append([a, r_a-1])
+                unprocessed_ranges.append([r_b+1, b])
+                processed_ranges.append([f(r_a, offset), f(r_b, offset)])
+            
+            elif b < r_a:
+                print("case 5")
+                unprocessed_ranges.append([a, b])
+            
+            elif r_b < a:
+                print("case 6")
+                unprocessed_ranges.append([a, b])
+            
+            else:
+                raise Exception("Unknown case")
+    
+    return processed_ranges + unprocessed_ranges
 
 
 
@@ -62,16 +104,18 @@ def main(data):
     
     for key in maps.keys():
         liste = maps[key]
+        print(key)
         for line in data[key].split("\n"):
             values = line.split(" ")
             values = [int(value) for value in values]
+            print(((values[1], values[1]+values[2]), values[0] - values[1]))
             liste.append(((values[1], values[1]+values[2]), values[0] - values[1]))
     
     # create the ranges of seeds
     seeds_raw = data["seeds"].split(" ")
     seeds_ranges = []
-    for i in range(len(seeds_raw//2)):
-        seeds_ranges.append((int(seeds_raw[2*i]), int(seeds_raw[2*i+1])))
+    for i in range(len(seeds_raw)//2):
+        seeds_ranges.append([int(seeds_raw[2*i]), int(seeds_raw[2*i])+int(seeds_raw[2*i+1])])
     
     # get the initial ranges of seeds
     # pass each of them through the first map (apply a function to the range) and detect the split in the ranges
@@ -79,11 +123,19 @@ def main(data):
     # the last map will give us the location ranges
     # final step is to find the minimal location within these ranges
     
-    
-    new_ranges = []
-    actual_map = seed_to_soil_map
-    for seed_range in seeds_ranges:
-        new_ranges.append(remap(actual_map, seed_range))
+    actual_ranges = seeds_ranges
+    print(actual_ranges)
+    for key in maps.keys():
+        print(key)
+        actual_map = maps[key]
+        new_ranges = []
+        for process_range in actual_ranges:
+            remap_ranges = remap(actual_map, process_range)
+            for new_range in remap_ranges:
+                new_ranges.append(new_range)
+        print(new_ranges)
+        actual_ranges = new_ranges
+
 
 
 
@@ -296,7 +348,7 @@ if __name__ == "__main__":
 56 93 4"""
     }
     
-    result = main(data)
+    result = main(data_test)
     print(result)
 
 
