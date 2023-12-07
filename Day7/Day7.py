@@ -7,19 +7,19 @@ def get_hist(cards):
             hist[card[0]] += 1
     return hist
 
+def get_score(cards, phase = 1):
+    if phase == 1:
+        # A, K, Q, J, T, 9, 8, 7, 6, 5, 4, 3, or 2
+        cards_values = {"A": 12, "K": 11, "Q": 10, "J": 9, "T": 8, "9": 7, "8": 6, "7": 5, "6": 4, "5": 3, "4": 2, "3": 1, "2": 0}
+    else:
+        # A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J
+        cards_values = {"A": 12, "K": 11, "Q": 10, "T": 9, "9": 8, "8": 7, "7": 6, "6": 5, "5": 4, "4": 3, "3": 2, "2": 1, "J": 0}
+    
+    first_value = None
+    second_value = None
+    hist = get_hist(cards)
 
-def main1(data):
-    # A, K, Q, J, T, 9, 8, 7, 6, 5, 4, 3, or 2
-    cards_values = {"A": 12, "K": 11, "Q": 10, "J": 9, "T": 8, "9": 7, "8": 6, "7": 5, "6": 4, "5": 3, "4": 2, "3": 1, "2": 0}
-    
-    cards_list = []
-    
-    for hand in data.split("\n"):
-        cards, bid = hand.split(" ")
-        first_value = None
-        second_value = None
-        hist = get_hist(cards)
-        
+    if phase == 1:
         if 5 in hist.values():
             first_value = 6
         elif 4 in hist.values():
@@ -34,35 +34,8 @@ def main1(data):
             first_value = 1
         else:
             first_value = 0
-        
-        second_value = tuple([cards_values[card] for card in cards])
-        
-        cards_list.append(((first_value, second_value), bid, cards))
     
-    # print(cards_list)
-    cards_list.sort(key=lambda x: x[0])
-    print(cards_list)
-    
-    total_winnings = 0
-    for i in range(len(cards_list)):
-        total_winnings += int(cards_list[i][1])*(i+1)
-    
-    return total_winnings
-
-
-
-def main2(data):
-    # A, K, Q, T, 9, 8, 7, 6, 5, 4, 3, 2, J
-    cards_values = {"A": 12, "K": 11, "Q": 10, "T": 9, "9": 8, "8": 7, "7": 6, "6": 5, "5": 4, "4": 3, "3": 2, "2": 1, "J": 0}
-    
-    cards_list = []
-    
-    for hand in data.split("\n"):
-        cards, bid = hand.split(" ")
-        first_value = None
-        second_value = None
-        hist = get_hist(cards)
-        
+    else:
         if 5 in hist.values():
             first_value = 6
         elif 4 in hist.values():
@@ -90,7 +63,9 @@ def main2(data):
                     first_value = 5
                 elif hist["J"] == 2 and len(hist) == 4:
                     first_value = 3
-                elif hist["J"] == 1:
+                elif hist["J"] == 1 and len(hist) == 3:
+                    first_value = 4
+                elif hist["J"] == 1 and len(hist) == 4:
                     first_value = 3
             elif len(hist) == 3:
                 first_value = 2
@@ -101,10 +76,21 @@ def main2(data):
                 first_value = 1
             else:
                 first_value = 0
+    
+    
+    second_value = tuple([cards_values[card] for card in cards])
+    
+    return (first_value, second_value)
+
+
+def main(data, phase = 1):    
+    cards_list = []
+    
+    for hand in data.split("\n"):
+        cards, bid = hand.split(" ")
+        score = get_score(cards, phase)
         
-        second_value = tuple([cards_values[card] for card in cards])
-        
-        cards_list.append(((first_value, second_value), bid, cards))
+        cards_list.append((score, bid, cards))
     
     # print(cards_list)
     cards_list.sort(key=lambda x: x[0])
@@ -129,7 +115,19 @@ KK677 28
 KTJJT 220
 QQQJA 483"""
     
-    result = main2(data_test)
+    score_meanings = {
+        6: "five of a kind",
+        5: "four of a kind",
+        4: "full house",
+        3: "three of a kind",
+        2: "two pairs",
+        1: "one pair",
+        0: "high card"
+    }
+    
+    result = main(data, 2)
     print(result)
 
+    # score = get_score("4455J", 2)
+    # print(f"{score_meanings[score[0]]} (score: {score[0]}), cards score: {score[1]}")
 
