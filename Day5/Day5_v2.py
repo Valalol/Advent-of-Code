@@ -1,3 +1,46 @@
+
+
+def remap(map, range):
+    # let a b be a range of seeds
+    # let f(x) be the function applied to the range
+    # let r_a, r_b be the range where f(x) is applied Ex [5, 25]
+    # start : [[a, b]] 
+    # multiples cases
+    
+    
+    # 1 : r_a <= a < b <= r_b
+    #     [[f(a), f(b)]]
+    #     [10, 20] -> [[f(10), f(20)]]
+    
+    # 2 : a < r_a <= b <= r_b
+    #     [[a, r_a-1], [f(r_a), f(b)]]
+    #     [0, 10] -> [[0, 4], [f(5), f(10)]]
+    #     [0, 5] -> [[0, 4], [f(5), f(5)]]
+    
+    # 3 : r_a <= a <= r_b < b
+    #     [[f(a), f(r_b)], [r_b+1, b]]
+    #     [20, 30] -> [[f(20), f(25)], [26, 30]]
+    #     [25, 30] -> [[f(25), f(25)], [26, 30]]
+    
+    # 4 : a < r_a <= r_b < b
+    #     [[a, r_a-1], [f(r_a), f(r_b)], [r_b+1, b]]
+    #     [0, 30] -> [[0, 4], [f(5), f(25)], [26, 30]]
+    
+    # 5 : r_b < a <= b
+    #     [[a, b]]
+    #     [40, 50] -> [[40, 50]]
+    
+    # 6 : a < b < r_a
+    #    [[a, b]]
+    #    [0, 4] -> [[0, 4]]
+    
+    return
+
+
+
+
+
+
 def main(data):
     seed_to_soil_map = []
     soil_to_fertilizer_map = []
@@ -24,12 +67,23 @@ def main(data):
             values = [int(value) for value in values]
             liste.append(((values[1], values[1]+values[2]), values[0] - values[1]))
     
+    # create the ranges of seeds
+    seeds_raw = data["seeds"].split(" ")
+    seeds_ranges = []
+    for i in range(len(seeds_raw//2)):
+        seeds_ranges.append((int(seeds_raw[2*i]), int(seeds_raw[2*i+1])))
     
     # get the initial ranges of seeds
     # pass each of them through the first map (apply a function to the range) and detect the split in the ranges
     # do this for each maps
     # the last map will give us the location ranges
     # final step is to find the minimal location within these ranges
+    
+    
+    new_ranges = []
+    actual_map = seed_to_soil_map
+    for seed_range in seeds_ranges:
+        new_ranges.append(remap(actual_map, seed_range))
 
 
 
