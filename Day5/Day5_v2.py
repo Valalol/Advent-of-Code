@@ -1,5 +1,4 @@
 def main(data):
-    # create the seed to soil map dictionary
     seed_to_soil_map = []
     soil_to_fertilizer_map = []
     fertilizer_to_water_map = []
@@ -18,9 +17,6 @@ def main(data):
         "humidity-to-location map": humidity_to_location_map
     }
     
-    
-    
-    
     for key in maps.keys():
         liste = maps[key]
         for line in data[key].split("\n"):
@@ -29,43 +25,11 @@ def main(data):
             liste.append(((values[1], values[1]+values[2]), values[0] - values[1]))
     
     
-    minimal_location = None
-    minimal_seed = None
-    seeds = data["seeds"].split(" ")
-    for i in range(len(seeds)//2):
-        first_value = int(seeds[i*2])
-        amount = int(seeds[i*2+1])
-        print(f"first_value: {first_value}, amount: {amount}")
-        counter = 0
-        for seed in range(first_value, first_value+amount, 200):
-            counter += 1
-            if counter % 10000 == 0:
-                percentage = (seed - first_value) / amount
-                print(f"{percentage*100:.2f}% ({seed})")
-            
-            value = seed
-            for transformation in maps.values():
-                for value_range, offset in transformation:
-                    if value_range[0] <= value <= value_range[1]:
-                        value += offset
-                        break
-            if minimal_location is None or value < minimal_location:
-                print(f"new minimal location: {value} (seed: {seed})")
-                minimal_location = value
-                minimal_seed = seed
-    
-    return minimal_location, minimal_seed
-    
-    # minimal_location = None
-    # minimal_seed = None
-    
-    # value = 566822419
-    # for transformation in maps.values():
-    #     for value_range, offset in transformation:
-    #         if value_range[0] <= value <= value_range[1]:
-    #             value += offset
-    #             break
-    # print(value)
+    # get the initial ranges of seeds
+    # pass each of them through the first map (apply a function to the range) and detect the split in the ranges
+    # do this for each maps
+    # the last map will give us the location ranges
+    # final step is to find the minimal location within these ranges
 
 
 
