@@ -1,28 +1,3 @@
-
-# The objective is to kinda like a nongram with only lines . are empty spaces # are filled spaces and ? are unknown spaces
-
-# let "???.?" be our line and "1,1" be our blocks so here we have 4 possibilities
-# we want to do it recursively
-
-# if I put a # in the first ? then the second ? must be empty so the next step is to compute "?.?" and "1" as blocks
-# in this case we have 2 possibilities (as we have 2 ?) so we have 2 possibilities
-
-# then we skip the first ? and put # in the second ? so the next step is to compute ".?" and "1" as blocks
-# in this case we have 1 possibility (as we have 1 ?) so we have 1 possibility
-
-# then we skip the first two ? and put # in the third ? so the next step is to compute ".?" and "1" as blocks
-# in this case we have 1 possibility (as we have 1 ?) so we have 1 possibility
-
-# then we skip the first three ? and put # in the fourth ? so the next step is to compute "" and "1" as blocks
-# in this case we have 0 possibility (as we have 0 ?) so we have 0 possibilities
-
-# so we have 2 + 1 + 1 + 0 = 4 possibilities
-
-# so our recursive stop condition is when we have only one block
-
-# each recursive step we can compute the number of possibilities by using a for loop going from 0 to the number of ? in the line
-# for each iteration we put a # in the ? and then we compute the number of possibilities of the remaining line and blocks
-
 _cache = {}
 
 def cache(func):
