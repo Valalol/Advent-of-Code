@@ -56,7 +56,7 @@ def main2(data):
 
 
 if __name__ == "__main__":
-    with open("Day2_data.txt", "r") as file:
+    with open("Day2/input.txt", "r") as file:
         data = file.read()
     
     data_test = """Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green

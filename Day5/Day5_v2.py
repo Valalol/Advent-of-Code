@@ -83,7 +83,7 @@ def main(data):
 
 
 if __name__ == "__main__":
-    with open("Day5/Day5_data.txt") as f:
+    with open("Day5/input.txt") as f:
         data = f.read()
     
     sections = data.split("\n\n")

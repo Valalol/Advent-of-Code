@@ -30,7 +30,7 @@ def main2(data):
 
 
 if __name__ == "__main__":
-    with open("Day4_data.txt", "r") as file:
+    with open("Day4/input.txt", "r") as file:
         data = file.read()
     
     data_test = """Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53

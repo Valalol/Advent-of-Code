@@ -39,7 +39,7 @@ def main(data, phase=1):
 
 
 if __name__ == "__main__":
-    with open("Day9/Day9_data.txt", "r") as file:
+    with open("Day9/input.txt", "r") as file:
         data = file.read()
     
     data_test = """0 3 6 9 12 15

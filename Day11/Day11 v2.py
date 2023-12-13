@@ -47,7 +47,7 @@ def main(data):
 
 
 if __name__ == "__main__":
-    with open("Day11/Day11_data.txt", "r") as file:
+    with open("Day11/input.txt", "r") as file:
         data = file.read()
     
     

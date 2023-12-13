@@ -69,7 +69,7 @@ def main(data, phase=1):
 
 
 if __name__ == "__main__":
-    with open("Day12/Day12_data.txt", "r") as file:
+    with open("Day12/input.txt", "r") as file:
         data = file.read()
 
     data_test = """???.### 1,1,3

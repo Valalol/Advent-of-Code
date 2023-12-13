@@ -106,7 +106,7 @@ def main(data, phase = 1):
 
 
 if __name__ == "__main__":
-    with open("Day7/Day7_data.txt", "r") as file:
+    with open("Day7/input.txt", "r") as file:
         data = file.read()
     
     data_test = """32T3K 765

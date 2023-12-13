@@ -162,7 +162,7 @@ def main2(data):
 
 
 if __name__ == "__main__":
-    with open("Day3_data.txt", "r") as file:
+    with open("Day3/input.txt", "r") as file:
         data = file.read()
     
     data_test = """467..114..

@@ -30,7 +30,7 @@ def main(data):
 
 
 if __name__ == "__main__":
-    with open("Day1_data.txt", "r") as file:
+    with open("Day1/input.txt", "r") as file:
         data = file.read()
     
     data_test = "1234567890onetwothreefourfivesixseveneightninezero"
