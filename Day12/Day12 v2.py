@@ -41,34 +41,26 @@ def cache(func):
 def recursive_func(text, correct_blocks, depth=0):
     block0 = correct_blocks[0]
     block0_indexes = []
-    if len(correct_blocks) == 1:
-        for i in range(len(text)-block0+1):
-            if "." in text[i:i+block0]:
-                continue # if there is a . in the block we skip it
-            if "#" in text[0:i]:
-                continue # if there is a # before the block we skip it
-            if i+block0 < len(text):
+    for i in range(len(text)-block0+1):
+        if "." in text[i:i+block0]:
+            continue # if there is a . in the block we skip it
+        if "#" in text[0:i]:
+            continue # if there is a # before the block we skip it
+        if i+block0 < len(text):
+            if len(correct_blocks) == 1:
                 if "#" in text[i+block0:]:
                     continue # if there is a # after the block we skip it
-            block0_indexes.append(i)
-        
-        result = len(block0_indexes)
-    
-    else:
-        for i in range(len(text)-block0+1):
-            if "." in text[i:i+block0]:
-                continue # if there is a . in the block we skip it
-            if "#" in text[0:i]:
-                continue # if there is a # before the block we skip it
-            if i+block0 < len(text):
+            else:
                 if text[i+block0] == "#":
                     continue # if there is a # just after the block since it's not really a block we skip it
-            block0_indexes.append(i)
-        
+        block0_indexes.append(i)
+    
+    if len(correct_blocks) == 1:
+        result = len(block0_indexes)
+    else:
         result = 0
         for i in block0_indexes:
             result += recursive_func(text[i+block0+1:], correct_blocks[1:], depth+1)
-    
     # print(f"[{depth}] Result for '{text}' and {correct_blocks}: {result}")
     return result
 
@@ -114,5 +106,3 @@ if __name__ == "__main__":
     
     result = main(data, 2)
     print(result)
-    
-    # print(main(data_test, 1))
