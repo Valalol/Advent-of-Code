@@ -39,27 +39,38 @@ def cache(func):
 
 @cache
 def recursive_func(text, correct_blocks, depth=0):
+    block0 = correct_blocks[0]
+    block0_indexes = []
     if len(correct_blocks) == 1:
-        blocks = [len(a) for a in text.split(".") if len(a) >= correct_blocks[0]]
-        result = sum([block - correct_blocks[0] + 1 for block in blocks])
-        # print(f"[{depth}] Result for '{text}' and {correct_blocks}: {result}")
-        return result
-    else:
-        block0 = correct_blocks[0]
-        block0_indexes = []
         for i in range(len(text)-block0+1):
-            if "." not in text[i:i+block0]:
-                if "#" in text[0:i]:
-                    continue
-                if i+block0 < len(text):
-                    if text[i+block0] == "#":
-                        continue
-                block0_indexes.append(i)
+            if "." in text[i:i+block0]:
+                continue # if there is a . in the block we skip it
+            if "#" in text[0:i]:
+                continue # if there is a # before the block we skip it
+            if i+block0 < len(text):
+                if "#" in text[i+block0:]:
+                    continue # if there is a # after the block we skip it
+            block0_indexes.append(i)
+        
+        result = len(block0_indexes)
+    
+    else:
+        for i in range(len(text)-block0+1):
+            if "." in text[i:i+block0]:
+                continue # if there is a . in the block we skip it
+            if "#" in text[0:i]:
+                continue # if there is a # before the block we skip it
+            if i+block0 < len(text):
+                if text[i+block0] == "#":
+                    continue # if there is a # just after the block since it's not really a block we skip it
+            block0_indexes.append(i)
+        
         result = 0
         for i in block0_indexes:
             result += recursive_func(text[i+block0+1:], correct_blocks[1:], depth+1)
-        # print(f"[{depth}] Result for '{text}' and {correct_blocks}: {result}")
-        return result
+    
+    # print(f"[{depth}] Result for '{text}' and {correct_blocks}: {result}")
+    return result
 
 
 
@@ -80,11 +91,12 @@ def parse(data, phase=1):
 
 def main(data, phase=1):
     data_parsed = parse(data, phase)
-    result = 0
+    output_value = 0
     for i, line in enumerate(data_parsed):
         print(i)
-        result += recursive_func(line[0], line[1])
-    return result
+        result = recursive_func(line[0], line[1])
+        output_value += result
+    return output_value
 
 
 
@@ -103,4 +115,4 @@ if __name__ == "__main__":
     result = main(data, 2)
     print(result)
     
-    # print(main("?###???????? 3,2,1", 2))
+    # print(main(data_test, 1))
