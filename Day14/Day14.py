@@ -39,6 +39,28 @@ def tilt(lines, side):
         tilted_lines = [i[::-1] for i in tilted_lines]
         return tilted_lines
 
+_cache = {}
+
+def cache(func):
+    def wrapper(*args):
+        args_hashable = tuple(tuple(i) for i in args[0])
+        if args_hashable in _cache:
+            return _cache[args_hashable]
+        else:
+            result = func(*args)
+            _cache[args_hashable] = result
+            return result
+    return wrapper
+
+@cache
+def cycle(lines):
+    lines = tilt(lines, "N")
+    lines = tilt(lines, "W")
+    lines = tilt(lines, "S")
+    lines = tilt(lines, "E")
+    return lines
+
+
 def pretty_print(data):
     print("--------")
     for line in data:
@@ -51,13 +73,20 @@ def main(data, phase=1):
     lines = [list(line) for line in data.split("\n")]
     pretty_print(lines)
     cycles = 1000000000
+    previous_lines = []
     for i in range(cycles):
-        if i%100000 == 0:
-            print(i)
-        lines = tilt(lines, "N")
-        lines = tilt(lines, "W")
-        lines = tilt(lines, "S")
-        lines = tilt(lines, "E")
+        lines = cycle(lines)
+        if lines in previous_lines:
+            delta = i - previous_lines.index(lines)
+            remaining = (cycles-i)%delta
+            break
+        else:
+            previous_lines.append(lines)
+            i -= 1
+    
+    for i in range(remaining-1):
+        lines = cycle(lines)
+    
     pretty_print(lines)
     load = count_load(lines)
     return(load)
@@ -79,5 +108,5 @@ O.#..O.#.#
 #....###..
 #OO..#...."""
     
-    result = main(data_test)
+    result = main(data)
     print(result)
