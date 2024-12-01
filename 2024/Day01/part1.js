@@ -1,3 +1,5 @@
+const startTime = performance.now()
+
 const fs = require('node:fs');
 
 data = fs.readFileSync(__dirname+'/input.txt', "utf-8")
@@ -11,3 +13,6 @@ diffs = data[0].map((_,i) => Math.abs(data[0][i] - data[1][i]));
 sum = diffs.reduce((partialSum, a) => partialSum + a, 0)
 
 console.log(JSON.stringify(sum))
+
+const endTime = performance.now()
+console.log(`Code took ${endTime - startTime} milliseconds`)
