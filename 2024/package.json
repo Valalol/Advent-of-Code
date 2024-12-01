@@ -1,0 +1,11 @@
+{
+  "name": "advent-of-code-2024",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "1-1": "node Day01/part1.js",
+    "1-2": "node Day01/part2.js"
+  },
+  "author": "Valentin Esnault",
+  "license": "ISC"
+}
