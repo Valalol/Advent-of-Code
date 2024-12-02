@@ -4,7 +4,7 @@ data = fs.readFileSync(__dirname+'/input.txt', "utf-8")
 
 const startTime = performance.now()
 
-data = data.split('\r\n').map(line => line.split('   ').map(value => parseInt(value)))
+data = data.split('\n').map(line => line.split('   ').map(value => parseInt(value)))
 data = data[0].map((_, col_index) => data.map(ligne => ligne[col_index]))
 
 const counter = {};
