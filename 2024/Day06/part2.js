@@ -50,7 +50,7 @@ let width = data.split("\n")[0].split("").length
 let directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]
 let directions_str = ["^", ">", "v", "<"]
 let obstacles = grid.filter(element => element[0] == "#").map(element => [element[1], element[2]])
-let gardien = [...grid.filter(element => element[0] != "." && element[0] != "#")[0]]
+let gardien = [...grid.filter(element => element[0] == "^")[0]]
 grid[grid.findIndex(element => element[1] == gardien[1] && element[2] == gardien[2])][0] = "."
 gardien[0] = directions_str.findIndex(element => element == gardien[0])
 
