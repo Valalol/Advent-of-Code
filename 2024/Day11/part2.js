@@ -5,7 +5,7 @@ let data = fs.readFileSync(__dirname+'/input.txt', "utf-8")
 
 const startTime = performance.now()
 
-stones = data.split(" ").map(Number)
+let stones = data.split(" ").map(Number)
 
 function memoize(fn) {
     const cache = {};
@@ -15,15 +15,16 @@ function memoize(fn) {
             cache[key] = fn.apply(this, args);
             return cache[key];
         } else {
-            console.log(`New hit: ${key}`);
+            // console.log(`New hit: ${key}`);
             return cache[key];
         }
     };
 }
 
-function rec_count_stones(stone, depth) {
-    if (depth == 75) return 1
-    
+
+function rec_count_stones(stone, blink_left) {
+    if (blink_left == 0) return 1
+
     let new_stones = []
     if (stone == 0) {
         new_stones.push(1)
@@ -37,19 +38,17 @@ function rec_count_stones(stone, depth) {
             new_stones.push(stone*2024)
         }
     }
-    let current_amount = new_stones.map(stone => rec_count_stones(stone, depth + 1)).reduce((partial_sum, value) => partial_sum + value, 0)
-    // if (depth < 5) {
-    //     console.log(`End of stone ${stone}, depth ${depth}`);
-    // }
+
+    let current_amount = new_stones.map(stone => memoized_rec_count_stones(stone, blink_left - 1)).reduce((partial_sum, value) => partial_sum + value, 0)
     return current_amount
 }
 
 const memoized_rec_count_stones = memoize(rec_count_stones);
 
-result = 0
-for (stone of stones) {
-    result += memoized_rec_count_stones(stone, 0)
-    console.log(`Stone ${stone} done ! Current result : ${result}`);
+let result = 0
+for (let stone of stones) {
+    result += memoized_rec_count_stones(stone, 75)
+    // console.log(`Stone ${stone} done ! Current result : ${result}`);
 }
 
 

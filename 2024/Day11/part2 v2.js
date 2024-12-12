@@ -1,12 +1,6 @@
 const fs = require('node:fs');
 
 
-let data = fs.readFileSync(__dirname+'/input.txt', "utf-8")
-
-// console.profile()
-const startTime = performance.now()
-
-
 function process_stone(stone) {
     if (stone == 0) return [1]
     let stone_str = `${stone}`
@@ -15,6 +9,12 @@ function process_stone(stone) {
         return [Number(stone_str.slice(0, stone_length / 2)), Number(stone_str.slice(stone_length / 2, stone_length))]
     } else return [stone*2024]
 }
+
+
+let data = fs.readFileSync(__dirname+'/input.txt', "utf-8")
+
+// console.profile()
+const startTime = performance.now()
 
 
 let stones = data.split(" ").map(Number)
