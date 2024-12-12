@@ -1,21 +1,6 @@
 const fs = require('node:fs');
 
 
-let data = fs.readFileSync(__dirname+'/input.txt', "utf-8")
-
-const startTime = performance.now()
-
-let grid = data.split("\n").map(line => line.split(""))
-let height = grid.length
-let width = grid[0].length
-
-let remaining_cells = new Set()
-for (let i = 0; i < height; i++) {
-    for (let j = 0; j < width; j++) {
-        remaining_cells.add(`${i}|${j}`)
-    }
-}
-
 function rec_calc_group(cell) {
     let x = cell[0]
     let y = cell[1]
@@ -55,6 +40,22 @@ function calc_perimeter(group) {
 }
 
 
+let data = fs.readFileSync(__dirname+'/input.txt', "utf-8")
+
+// console.profile()
+const startTime = performance.now()
+
+let grid = data.split("\n").map(line => line.split(""))
+let height = grid.length
+let width = grid[0].length
+
+let remaining_cells = new Set()
+for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
+        remaining_cells.add(`${i}|${j}`)
+    }
+}
+
 let groups = []
 while (remaining_cells.size > 0) {
     let new_cell = remaining_cells.values().next().value
@@ -62,10 +63,10 @@ while (remaining_cells.size > 0) {
     groups.push(rec_calc_group(new_cell.split("|").map(Number)))
 }
 
-for (let group of groups) {
-    let perimeter = calc_perimeter(group)
-    console.log(`A region of ${grid[group[0][0]][group[0][1]]} plants with price ${group.length} * ${perimeter} = ${group.length * perimeter}.`)
-}
+// for (let group of groups) {
+//     let perimeter = calc_perimeter(group)
+//     console.log(`A region of ${grid[group[0][0]][group[0][1]]} plants with price ${group.length} * ${perimeter} = ${group.length * perimeter}.`)
+// }
 let result = groups.map(group => group.length * calc_perimeter(group)).reduce((partial_sum, value) => partial_sum + value, 0)
 
 
@@ -77,6 +78,7 @@ let result = groups.map(group => group.length * calc_perimeter(group)).reduce((p
 
 
 const endTime = performance.now()
+// console.profileEnd()
 
 console.log(JSON.stringify(result))
 console.log(`Code took ${endTime - startTime} milliseconds`)
