@@ -12,8 +12,8 @@ let machines = data.split("\n\n").map(machine_str => machine_str.split("\n").map
     machine.Ay = machine_array[0][1]
     machine.Bx = machine_array[1][0]
     machine.By = machine_array[1][1]
-    machine.X = machine_array[2][0] + 10000000000000
-    machine.Y = machine_array[2][1] + 10000000000000
+    machine.X = machine_array[2][0]
+    machine.Y = machine_array[2][1]
     return machine
 })
 
