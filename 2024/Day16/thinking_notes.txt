@@ -1,0 +1,39 @@
+
+
+0 <= x < height
+0 <= y < width
+d ∈ {0,1,2,3}
+directions = [[0,1], [-1,0], [0,-1], [1,0]]
+              right    up     left   down
+
+state = (x, y, d)
+initial_state : (13, 1, 0)
+end_state : x = end.x && y = end.y
+
+Operations:
+- rotate counter-clockwise:
+    (x, y, d) => (x, y, (d+1)%4)
+    cost: 1000
+
+- rotate clockwise:
+    (x, y, d) => (x, y, (d-1+4)%4)
+    cost: 1000
+
+- step forward:
+    let (dx, dy) = directions[d]
+    (x, y, d) => (x+dx, y+dy, d)
+    cost: 1
+
+Predicate:
+Can only step forward if 
+    let (dx, dy) = directions[d]
+    grid[x+dx][y+dy] == "."
+
+
+stack = neighboors = start.neighboors
+While not is_finished
+    neighboors.sort(cost)
+    new_
+
+
+
