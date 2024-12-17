@@ -30,10 +30,17 @@ Can only step forward if
     grid[x+dx][y+dy] == "."
 
 
-stack = neighboors = start.neighboors
-While not is_finished
-    neighboors.sort(cost)
-    new_
+graph = {}
 
+for each cell of the grid
+if the cell is walkable
+for each direction
+add the current state to the graph
+graph[`${x}|${y}|${d}`] = {}
+add the other rotations as vertices
+graph[`${x}|${y}|${d}`][`${x}|${y}|${(d+1)%4}`] = 1000
+graph[`${x}|${y}|${d}`][`${x}|${y}|${(d+3)%4}`] = 1000
+if the forward direction is walkable, add it as a vertex
+graph[`${x}|${y}|${d}`][`${x + directions[d][0]}|${y + directions[d][1]}|${d}`] = 1
 
 
